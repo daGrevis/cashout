@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>
+    Balance: <strong>{{ balance|round(2) }}</strong> EUR
+</p>
+
+<form method="post">
+    <p>
+        <label>
+            Name
+            <input name=name>
+        </label>
+    </p>
+    <p>
+        <label>
+            Price
+            <input name=price>
+        </label>
+    </p>
+
+    <p>
+        <label>
+            <input type=radio name=is_expense value=1 checked>
+            Expense
+        </label>
+    </p>
+    <p>
+        <label>
+            <input type=radio name=is_expense value=0>
+            Income
+        </label>
+    </p>
+
+    <button>Add Payment</button>
+</form>
+
+<br />
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payment in payments %}
+        <tr>
+            <td>
+                {{ payment.name }}
+            </td>
+            <td>
+                {{ payment.price }} EUR
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
