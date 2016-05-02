@@ -1,3 +1,4 @@
+from os import environ as env
 from datetime import datetime
 from decimal import Decimal as D
 
@@ -5,10 +6,10 @@ from flask import Flask, request, redirect, render_template
 from peewee import SqliteDatabase, Model, DateTimeField, CharField, DecimalField, fn
 
 
+DBPATH = env.get("CASHOUT_DBPATH", "default.db")
+db = SqliteDatabase(DBPATH)
+
 app = Flask(__name__)
-
-
-db = SqliteDatabase("default.db")
 
 
 class Payment(Model):
@@ -56,4 +57,4 @@ db.create_tables([Payment], safe=True)
 
 app.debug = True
 
-app.run()
+app.run(host= "0.0.0.0")
