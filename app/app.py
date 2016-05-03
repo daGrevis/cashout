@@ -52,6 +52,11 @@ def index():
     )
 
 
+@app.route("/test")
+def test():
+    return "OK"
+
+
 db.connect()
 db.create_tables([Payment], safe=True)
 
