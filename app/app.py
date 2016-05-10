@@ -43,7 +43,7 @@ def index():
         return redirect("/")
 
     balance = Payment.select(fn.Sum(Payment.price)).scalar() or 0
-    payments = Payment.select().order_by(-Payment.created).limit(10)
+    payments = Payment.select().order_by(-Payment.created)
 
     return render_template(
         "index.html",
