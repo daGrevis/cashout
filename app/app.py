@@ -7,7 +7,7 @@ from peewee import SqliteDatabase, Model, DateTimeField, CharField, DecimalField
 
 
 DBPATH = env.get("CASHOUT_DBPATH", "default.db")
-APPROOT = env.get("CASHOUT_APPROOT", "/")
+APPROOT = env.get("CASHOUT_APPROOT", "")
 
 db = SqliteDatabase(DBPATH)
 
