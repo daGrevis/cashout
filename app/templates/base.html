@@ -5,13 +5,22 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <link rel="stylesheet" href='{{ url_for("static", filename="bundle.css") }}'>
     </head>
     <body>
-        <a href="/">
-            <h1>Cashout</h1>
-        </a>
+        <header>
+            <a href='{{ url_for("index") }}'>
+                <h1>Cashout</h1>
+                <strong>{{ balance|round(2) }}</strong> EUR
+            </a>
+        </header>
 
         {% block content %}
         {% endblock %}
+
+        <div id="react"></div>
+
+        <script src='{{ url_for("static", filename="bundle.js") }}'></script>
     </body>
 </html>

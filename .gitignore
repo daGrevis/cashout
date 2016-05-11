@@ -3,4 +3,6 @@ bin/
 default.db
 include/
 lib/
+node_modules/
 pip-selfcheck.json
+static/

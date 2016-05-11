@@ -7,9 +7,12 @@ from peewee import SqliteDatabase, Model, DateTimeField, CharField, DecimalField
 
 
 DBPATH = env.get("CASHOUT_DBPATH", "default.db")
+APPROOT = env.get("CASHOUT_APPROOT", "/")
+
 db = SqliteDatabase(DBPATH)
 
 app = Flask(__name__)
+app.config["APPLICATION_ROOT"] = APPROOT
 
 
 class Payment(Model):
