@@ -12,7 +12,13 @@ APPROOT = env.get("CASHOUT_APPROOT", "/")
 db = SqliteDatabase(DBPATH)
 
 app = Flask(__name__)
-app.config["APPLICATION_ROOT"] = APPROOT
+
+
+@app.context_processor
+def template_context():
+    return {
+        "app_root": APPROOT,
+    }
 
 
 class Payment(Model):
