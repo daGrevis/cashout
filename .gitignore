@@ -4,5 +4,6 @@ default.db
 include/
 lib/
 node_modules/
+npm-debug.log
 pip-selfcheck.json
 static/

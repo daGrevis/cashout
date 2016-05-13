@@ -1,5 +1,4 @@
 import React from "react"
-import ReactDOM from "react-dom"
 
 class Index extends React.Component {
     render() {
@@ -7,4 +6,4 @@ class Index extends React.Component {
     }
 }
 
-ReactDOM.render(<Index />, document.getElementById("react"))
+export {Index}
