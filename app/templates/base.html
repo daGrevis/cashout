@@ -9,16 +9,6 @@
         <link rel="stylesheet" href="{{ app_root }}/static/bundle.css">
     </head>
     <body>
-        <header>
-            <a href="{{ app_root }}/">
-                <h1>Cashout</h1>
-                <strong>{{ balance|round(2) }}</strong> EUR
-            </a>
-        </header>
-
-        {% block content %}
-        {% endblock %}
-
         <div id="react"></div>
 
         <script src="{{ app_root }}/static/bundle.js"></script>

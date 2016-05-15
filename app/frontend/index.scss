@@ -1,0 +1,38 @@
+#index {
+    .payments-today {
+        h2 {
+            font-weight: normal;
+
+            .day {
+                font-weight: bold;
+            }
+            .price-sum {
+                font-size: 14px;
+                font-weight: bold;
+                padding-left: 10px;
+                vertical-align: middle;
+            }
+        }
+
+        .payment {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            border-left: 5px solid #DDD;
+
+            h3 {
+                font-weight: normal;
+                line-height: 0;
+            }
+            .price {
+                font-size: 14px;
+                font-weight: bold;
+                padding-right: 10px;
+            }
+            .created-time {
+                font-size: 12px;
+                color: #444;
+            }
+        }
+    }
+}

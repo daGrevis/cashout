@@ -7,6 +7,7 @@ import {Root} from "./root"
 import {Index} from "./index"
 
 import "./base.scss"
+import "./index.scss"
 
 // Useless call on purpose. This silences the linter.
 // I'm importing React, but not using it. Not importing it breaks the app, not sure why.

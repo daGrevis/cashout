@@ -1,9 +1,25 @@
 import React from "react"
 
-class Root extends React.Component {
+class Header extends React.Component {
+
     render() {
-        return <div>{this.props.children}</div>
+        return <header>
+            <h1>Cashout</h1>
+        </header>
     }
+
+}
+
+class Root extends React.Component {
+
+    render() {
+        return <div>
+            <Header />
+
+            {this.props.children}
+        </div>
+    }
+
 }
 
 export {Root}
