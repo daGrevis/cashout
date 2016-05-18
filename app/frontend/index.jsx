@@ -3,6 +3,8 @@ import _ from "lodash"
 import moment from "moment"
 import React from "react"
 
+import {PaymentForm} from "./payment-form"
+
 function formatCurrency(x) {
     x = _.round(x, 2)
     if (x > 0) {
@@ -15,7 +17,7 @@ function formatCurrency(x) {
 class Payment extends React.Component {
 
     getName(payment) {
-        return payment.name
+        return payment.name || "Untitled"
     }
 
     render() {
@@ -74,6 +76,8 @@ class Index extends React.Component {
         let paymentsGrouped = this.groupPayments(this.state.payments)
 
         return <div id="index">
+            <PaymentForm />
+
             {_.map(paymentsGrouped, (payments) => {
                 let created = moment(_.first(payments).created)
                 let priceSum = _.sum(_.map(payments, "price"))

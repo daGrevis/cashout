@@ -20,7 +20,7 @@ app = Flask(__name__)
 @app.context_processor
 def template_context():
     return {
-        "app_root": APPROOT,
+        "APPROOT": APPROOT,
     }
 
 
@@ -123,5 +123,3 @@ db.connect()
 db.create_tables([Payment], safe=True)
 
 app.debug = True
-
-app.run(host= "0.0.0.0")

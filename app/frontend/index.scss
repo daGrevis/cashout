@@ -1,4 +1,8 @@
 #index {
+    .payment-form {
+        margin-bottom: 50px;
+    }
+
     .payments-today {
         h2 {
             font-weight: normal;
@@ -15,12 +19,14 @@
         }
 
         .payment {
+            margin-left: -15px;
             padding-top: 5px;
             padding-bottom: 5px;
             padding-left: 10px;
             border-left: 5px solid #DDD;
 
             h3 {
+                font-size: 18px;
                 font-weight: normal;
                 line-height: 0;
             }

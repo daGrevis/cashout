@@ -6,11 +6,15 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-        <link rel="stylesheet" href="{{ app_root }}/static/bundle.css">
+        <link rel="stylesheet" href="{{ APPROOT }}/static/bundle.css">
     </head>
     <body>
+        <script>
+            window.APPROOT = "{{ APPROOT }}"
+        </script>
+
         <div id="react"></div>
 
-        <script src="{{ app_root }}/static/bundle.js"></script>
+        <script src="{{ APPROOT }}/static/bundle.js"></script>
     </body>
 </html>

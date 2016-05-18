@@ -23,6 +23,7 @@
   "dependencies": {
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
+    "normalize.css": "^4.1.1",
     "npm-zepto": "^1.1.7",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
