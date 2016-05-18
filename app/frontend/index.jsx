@@ -65,8 +65,10 @@ class Index extends React.Component {
     }
 
     componentDidMount() {
-        $.get("/api/payments", ({payments}) => {
-            this.setState({payments})
+        $.get(linkTo("/api/payments"), (response) => {
+            this.setState({
+                payments: response.payments,
+            })
         })
     }
 
