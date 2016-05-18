@@ -1,10 +1,10 @@
 import collections
 from os import environ as env
 from datetime import date, datetime
-from decimal import Decimal as D
 
 import simplejson
-from flask import Flask, request, make_response, redirect, render_template
+import status
+from flask import Flask, request, make_response, render_template
 from flask_restful import Api, Resource
 from peewee import SqliteDatabase, Model, DateTimeField, CharField, DecimalField, fn
 
@@ -21,6 +21,7 @@ app = Flask(__name__)
 def template_context():
     return {
         "APPROOT": APPROOT,
+        "balance": Payment.select(fn.Sum(Payment.price)).scalar() or 0,
     }
 
 
@@ -73,22 +74,6 @@ class Payment(Model):
 
 @app.route("/", methods=["GET"])
 def index():
-    # if request.method == "POST":
-    #     payment = Payment()
-
-    #     payment.name = request.form["name"]
-    #     payment.price = D(request.form["price"])
-
-    #     if request.form["is_expense"] == "1":
-    #         payment.price *= -1
-
-    #     payment.save()
-
-    #     return redirect("/")
-
-    # balance = Payment.select(fn.Sum(Payment.price)).scalar() or 0
-    # payments = Payment.select().order_by(-Payment.created)
-
     return render_template("base.html")
 
 
@@ -111,9 +96,15 @@ class PaymentsResource(Resource):
 
 class PaymentResource(Resource):
 
-    pass
+    def post(self):
+        payment = Payment()
 
+        payment.name = request.form["name"]
+        payment.price = request.form["price"]
 
+        payment.save()
+
+        return "", status.HTTP_201_CREATED
 
 api.add_resource(PaymentsResource, "/payments")
 api.add_resource(PaymentResource, "/payment")

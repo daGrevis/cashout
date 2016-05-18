@@ -1,18 +1,10 @@
-import $ from "npm-zepto"
 import _ from "lodash"
+import $ from "npm-zepto"
 import moment from "moment"
 import React from "react"
 
+import {linkTo, formatMoney} from "./utils"
 import {PaymentForm} from "./payment-form"
-
-function formatCurrency(x) {
-    x = _.round(x, 2)
-    if (x > 0) {
-        return "+" + x
-    } else {
-        return Math.abs(x)
-    }
-}
 
 class Payment extends React.Component {
 
@@ -26,7 +18,7 @@ class Payment extends React.Component {
 
         return <div className="payment">
             <h3>{this.getName(payment)}</h3>
-            <span className="price">{formatCurrency(payment.price)} EUR</span>
+            <span className="price">{formatMoney(payment.price)} EUR</span>
             <span className="created-time">at {created.format("HH:mm")}</span>
         </div>
     }
@@ -40,7 +32,7 @@ class PaymentsToday extends React.Component {
             <h2>
                 {this.props.created.format("MM/")}
                 <span className="day">{this.props.created.format("DD")}</span>
-                <span className="price-sum">{formatCurrency(this.props.priceSum)} EUR</span>
+                <span className="price-sum">{formatMoney(this.props.priceSum)} EUR</span>
             </h2>
 
             {_.map(this.props.payments, (payment) => {
@@ -66,6 +58,12 @@ class Index extends React.Component {
             .value()
     }
 
+    onSubmit(data) {
+        $.post(linkTo("/api/payment"), data, () => {
+            location.reload()
+        })
+    }
+
     componentDidMount() {
         $.get("/api/payments", ({payments}) => {
             this.setState({payments})
@@ -76,7 +74,7 @@ class Index extends React.Component {
         let paymentsGrouped = this.groupPayments(this.state.payments)
 
         return <div id="index">
-            <PaymentForm />
+            <PaymentForm onSubmit={this.onSubmit} />
 
             {_.map(paymentsGrouped, (payments) => {
                 let created = moment(_.first(payments).created)
