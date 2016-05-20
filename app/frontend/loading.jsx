@@ -24,9 +24,9 @@ class Loading extends React.Component {
     render() {
         let dots = (this.state.tick % 3) + 1
 
-        return <p>
+        return <div className={this.props.className}>
             {_.repeat(".", dots)}
-        </p>
+        </div>
     }
 
 }

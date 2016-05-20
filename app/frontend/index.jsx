@@ -14,7 +14,7 @@ class Metrics extends React.Component {
         let m = this.props.metrics
 
         if (m === null) {
-            return <Loading />
+            return <Loading className="metrics" />
         }
 
         return <div className="metrics">
@@ -145,7 +145,6 @@ class Index extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         return <div id="index">
             <Metrics metrics={this.state.metrics} />
             <PaymentForm onSubmit={this.onSubmit} />
