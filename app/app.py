@@ -1,12 +1,23 @@
-import collections
+from collections import Iterable
 from os import environ as env
 from datetime import date, datetime
+from decimal import Decimal as D
+from calendar import monthrange
 
 import simplejson
 import status
 from flask import Flask, request, make_response, render_template
 from flask_restful import Api, Resource
 from peewee import SqliteDatabase, Model, DateTimeField, CharField, DecimalField, fn
+
+
+def get_first_day_of_month(dt):
+    # Zero based. Monday is 0.
+    return monthrange(dt.year, dt.month)[0]
+
+
+def get_days_month(dt):
+    return monthrange(dt.year, dt.month)[1]
 
 
 DBPATH = env.get("CASHOUT_DBPATH", "default.db")
@@ -21,7 +32,6 @@ app = Flask(__name__)
 def template_context():
     return {
         "APPROOT": APPROOT,
-        "balance": Payment.select(fn.Sum(Payment.price)).scalar() or 0,
     }
 
 
@@ -35,7 +45,7 @@ def json_encoder(obj):
     if type(obj) is datetime:
         return obj.isoformat()
 
-    if isinstance(obj, collections.Iterable) and not isinstance(obj, (list, set)):
+    if isinstance(obj, Iterable) and not isinstance(obj, (list, set)):
         return list(obj)
 
     raise TypeError(repr(obj) + " is not JSON serializable")
@@ -43,7 +53,10 @@ def json_encoder(obj):
 
 @api.representation("application/json")
 def output_json(data, code, headers=None):
-    response = make_response(simplejson.dumps(data, default=json_encoder), code)
+    response = make_response(
+        simplejson.dumps(data, default=json_encoder),
+        code,
+    )
     response.headers.extend(headers or {})
 
     return response
@@ -72,7 +85,18 @@ class Payment(Model):
         }
 
 
-@app.route("/", methods=["GET"])
+def get_balance():
+    return D(Payment.select(fn.Sum(Payment.price)).scalar() or 0)
+
+
+def get_days_left(now=None):
+    if now is None:
+        now = datetime.now()
+
+    return (get_days_month(now) - now.day) + 1
+
+
+@app.route("/")
 def index():
     return render_template("base.html")
 
@@ -87,7 +111,9 @@ class PaymentsResource(Resource):
 
     def get(self):
         today = date.today()
-        payments = Payment.select().where(Payment.created >= date(today.year, today.month, 1)).order_by(-Payment.created)
+        payments = Payment.select().where(
+            Payment.created >= date(today.year, today.month, 1)
+        ).order_by(-Payment.created)
 
         return {
             "payments": [x.to_dict() for x in payments],
@@ -106,11 +132,19 @@ class PaymentResource(Resource):
 
         return "", status.HTTP_201_CREATED
 
+
+class MetricsResource(Resource):
+
+    def get(self):
+        return {
+            "balance": get_balance(),
+            "days_left": get_days_left(),
+        }
+
 api.add_resource(PaymentsResource, "/payments")
 api.add_resource(PaymentResource, "/payment")
+api.add_resource(MetricsResource, "/metrics")
 
 
 db.connect()
 db.create_tables([Payment], safe=True)
-
-app.debug = True

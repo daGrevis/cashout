@@ -1,4 +1,14 @@
 #index {
+    .metrics {
+        margin-bottom: 50px;
+
+        > p > span:nth-child(2) {
+            padding-left: 10px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+    }
+
     .payment-form {
         margin-bottom: 50px;
     }
@@ -10,9 +20,7 @@
             .day {
                 font-weight: bold;
             }
-            .price-sum {
-                font-size: 14px;
-                font-weight: bold;
+            .price-sum .money {
                 padding-left: 10px;
                 vertical-align: middle;
             }
@@ -30,9 +38,7 @@
                 font-weight: normal;
                 line-height: 0;
             }
-            .price {
-                font-size: 14px;
-                font-weight: bold;
+            .price .money {
                 padding-right: 10px;
             }
             .created-time {
