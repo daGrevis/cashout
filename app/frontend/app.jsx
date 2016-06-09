@@ -5,6 +5,7 @@ import {Router, Route, IndexRoute, hashHistory} from "react-router"
 
 import {Root} from "./root"
 import {Index} from "./index"
+import {Payment} from "./payment"
 
 import "./base.scss"
 import "./index.scss"
@@ -17,6 +18,7 @@ let router = (
     <Router history={hashHistory}>
         <Route path="/" component={Root}>
             <IndexRoute component={Index}/>
+            <Route path="payment/:id" component={Payment} />
         </Route>
     </Router>
 )

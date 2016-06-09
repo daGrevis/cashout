@@ -5,19 +5,27 @@ import {parseMoney} from "./utils"
 class PaymentForm extends React.Component {
 
     state = {
-        price: "",
+        id: "",
+        created: "",
         name: "",
+        price: "",
+    }
+
+    constructor(props) {
+        super(props)
+
+        if (props.payment) {
+            this.state = this.props.payment
+        }
     }
 
     onClick = (ev) => {
         ev.preventDefault()
 
-        let {price, name} = this.state
-        price = parseMoney(price)
-        this.props.onSubmit({
-            price,
-            name,
-        })
+        let payment = this.state
+        payment.price = parseMoney(payment.price)
+
+        this.props.onSubmit(payment)
     }
 
     onChange(ev, fieldName) {

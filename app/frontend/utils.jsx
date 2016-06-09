@@ -1,3 +1,4 @@
+import $ from "npm-zepto"
 import _ from "lodash"
 
 function linkTo(where) {
@@ -27,8 +28,14 @@ function parseMoney(x) {
     return money
 }
 
+function ajaxPut(url, data, success) {
+    let type = "PUT"
+    return $.ajax({type, url, data, success})
+}
+
 export {
     linkTo,
     formatMoney,
     parseMoney,
+    ajaxPut,
 }

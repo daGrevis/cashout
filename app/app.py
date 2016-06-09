@@ -72,6 +72,10 @@ class Payment(Model):
     class Meta:
         database = db
 
+    @staticmethod
+    def get_by_id(payment_id):
+        return Payment.select().where(Payment.id == payment_id).get()
+
     def save(self, *args, **kwargs):
         if self.id is None:
             self.created = datetime.now()
@@ -121,9 +125,6 @@ class PaymentsResource(Resource):
             "payments": [x.to_dict() for x in payments],
         }
 
-
-class PaymentResource(Resource):
-
     def post(self):
         payment = Payment()
 
@@ -135,6 +136,26 @@ class PaymentResource(Resource):
         return "", status.HTTP_201_CREATED
 
 
+class PaymentResource(Resource):
+
+    def get(self, payment_id):
+        payment = Payment.get_by_id(payment_id)
+
+        return {
+            "payment": payment.to_dict(),
+        }
+
+    def put(self, payment_id):
+        payment = Payment.get_by_id(payment_id)
+        print(payment.name)
+        print(request.form)
+
+        payment.name = request.form["name"]
+        payment.price = request.form["price"]
+
+        payment.save()
+
+
 class MetricsResource(Resource):
 
     def get(self):
@@ -144,7 +165,7 @@ class MetricsResource(Resource):
         }
 
 api.add_resource(PaymentsResource, "/payments")
-api.add_resource(PaymentResource, "/payment")
+api.add_resource(PaymentResource, "/payment/<int:payment_id>")
 api.add_resource(MetricsResource, "/metrics")
 
 

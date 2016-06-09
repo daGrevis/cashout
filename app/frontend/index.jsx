@@ -33,6 +33,15 @@ class Metrics extends React.Component {
 
 class Payment extends React.Component {
 
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired,
+    }
+
+    onClick(ev, id) {
+        let link = "/payment/" + id
+        this.context.router.push(link)
+    }
+
     getName(payment) {
         return payment.name || "Untitled"
     }
@@ -41,7 +50,7 @@ class Payment extends React.Component {
         let payment = this.props.payment
         let created = moment(payment.created)
 
-        return <div className="payment">
+        return <div className="payment" onClick={(ev) => this.onClick(ev, payment.id)}>
             <h3>{this.getName(payment)}</h3>
 
             <span className="price">
@@ -118,7 +127,7 @@ class Index extends React.Component {
     }
 
     onSubmit(data) {
-        $.post(linkTo("/api/payment"), data, () => {
+        $.post(linkTo("/api/payments"), data, () => {
             location.reload()
         })
     }
