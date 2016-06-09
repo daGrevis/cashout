@@ -39,6 +39,10 @@ api = Api(app, prefix="/api")
 
 
 def json_encoder(obj):
+    if type(obj) is D:  # Decimal
+        # Wraps decimal in quotes. Prevents things like NaN crashing the client.
+        return str(obj)
+
     if type(obj) is date:
         return obj.isoformat()
 
@@ -53,10 +57,8 @@ def json_encoder(obj):
 
 @api.representation("application/json")
 def output_json(data, code, headers=None):
-    response = make_response(
-        simplejson.dumps(data, default=json_encoder),
-        code,
-    )
+    encoded_json = simplejson.dumps(data, default=json_encoder, use_decimal=False)
+    response = make_response(encoded_json, code)
     response.headers.extend(headers or {})
 
     return response
