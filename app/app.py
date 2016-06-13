@@ -40,8 +40,13 @@ api = Api(app, prefix="/api")
 
 def json_encoder(obj):
     if type(obj) is D:  # Decimal
-        # Wraps decimal in quotes. Prevents things like NaN crashing the client.
-        return str(obj)
+        obj_str = str(obj)
+
+        # Prevents crash when parsing JSON.
+        if obj_str in ("NaN", "-NaN", "Infinity", "-Infinity"):
+            return obj_str
+
+        return float(obj_str)
 
     if type(obj) is date:
         return obj.isoformat()
