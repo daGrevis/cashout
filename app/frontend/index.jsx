@@ -3,30 +3,28 @@ import $ from "npm-zepto"
 import moment from "moment"
 import React from "react"
 
-import {linkTo} from "./utils"
+import {linkTo, parseMoney} from "./utils"
 import {Loading} from "./loading.jsx"
 import {Money} from "./money.jsx"
-import {PaymentForm} from "./payment-form"
+import {PaymentForm, getEmptyPayment} from "./payment-form"
 
 class Metrics extends React.Component {
 
     render() {
         let m = this.props.metrics
 
-        if (m === null) {
-            return <Loading className="metrics" />
-        }
-
-        return <div className="metrics">
-            <p>
-                <span>Balance:</span>
-                <span><Money>{m.balance}</Money></span>
-            </p>
-            <p>
-                <span>Days left:</span>
-                <span>{m.days_left}</span>
-            </p>
-        </div>
+        return <Loading isLoading={m === null}>
+            <div className="metrics">
+                <p>
+                    <span>Balance:</span>
+                    <span><Money>{m && m.balance}</Money></span>
+                </p>
+                <p>
+                    <span>Days left:</span>
+                    <span>{m && m.days_left}</span>
+                </p>
+            </div>
+        </Loading>
     }
 
 }
@@ -98,23 +96,21 @@ class PaymentsMonth extends React.Component {
     }
 
     render() {
-        if (this.props.payments === null) {
-            return <Loading />
-        }
+        return <Loading isLoading={this.props.payments === null}>
+            <div>
+                {_.map(this.groupPayments(this.props.payments), (payments) => {
+                    let created = moment(_.first(payments).created)
+                    let priceSum = _.sum(_.map(payments, "price"))
 
-        return <div>
-            {_.map(this.groupPayments(this.props.payments), (payments) => {
-                let created = moment(_.first(payments).created)
-                let priceSum = _.sum(_.map(payments, "price"))
-
-                return <PaymentsToday
-                    key={created.unix()}
-                    payments={payments}
-                    created={created}
-                    priceSum={priceSum}
-                />
-            })}
-        </div>
+                    return <PaymentsToday
+                        key={created.unix()}
+                        payments={payments}
+                        created={created}
+                        priceSum={priceSum}
+                    />
+                })}
+            </div>
+        </Loading>
     }
 
 }
@@ -122,17 +118,18 @@ class PaymentsMonth extends React.Component {
 class Index extends React.Component {
 
     state = {
+        payment: getEmptyPayment(),
         payments: null,
         metrics: null,
     }
 
-    onSubmit(data) {
-        $.post(linkTo("/api/payments"), data, () => {
-            location.reload()
-        })
+    componentDidMount() {
+        this.loadPayments()
+        this.loadMetrics()
     }
 
     loadPayments() {
+        this.setState({payments: []})
         $.get(linkTo("/api/payments"), (response) => {
             this.setState({
                 payments: response.payments,
@@ -148,15 +145,37 @@ class Index extends React.Component {
         })
     }
 
-    componentDidMount() {
-        this.loadPayments()
-        this.loadMetrics()
+    onPaymentFormChange = (k, v) => {
+        let payment = this.state.payment
+        payment[k] = v
+
+        this.setState({payment: payment})
+    }
+
+    onPaymentFormSubmit = () => {
+        let payment = this.state.payment
+
+        payment.price = parseMoney(payment.price)
+
+        let link = linkTo("/api/payments")
+        $.post(link, payment, () => {
+            let payment = getEmptyPayment()
+
+            this.setState({payment})
+            this.loadPayments()
+        })
     }
 
     render() {
         return <div id="index">
             <Metrics metrics={this.state.metrics} />
-            <PaymentForm onSubmit={this.onSubmit} />
+
+            <PaymentForm
+                payment={this.state.payment}
+                change={this.onPaymentFormChange}
+                submit={this.onPaymentFormSubmit}
+            />
+
             <PaymentsMonth payments={this.state.payments} />
         </div>
     }

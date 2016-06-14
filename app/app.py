@@ -152,8 +152,6 @@ class PaymentResource(Resource):
 
     def put(self, payment_id):
         payment = Payment.get_by_id(payment_id)
-        print(payment.name)
-        print(request.form)
 
         payment.name = request.form["name"]
         payment.price = request.form["price"]

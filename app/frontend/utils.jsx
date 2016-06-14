@@ -8,6 +8,7 @@ function linkTo(where) {
 function formatMoney(x) {
     x = _.round(x, 2)
 
+    // When positive, show an explicit +.
     if (x > 0) {
         return "+" + x
     }
@@ -17,14 +18,18 @@ function formatMoney(x) {
 
 function parseMoney(x) {
     let money = parseFloat(x)
+
+    // When starts with +, it's meant to be positive.
     if (_.startsWith(x, "+")) {
         return money
     }
 
+    // When positive, but doesn't start with +, we assume it's a negative number.
     if (money > 0) {
         money *= -1
     }
 
+    // Otherwise just pass through.
     return money
 }
 

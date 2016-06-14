@@ -1,7 +1,7 @@
 import $ from "npm-zepto"
 import React from "react"
 
-import {linkTo, ajaxPut} from "./utils"
+import {linkTo, ajaxPut, parseMoney} from "./utils"
 import {Loading} from "./loading.jsx"
 import {PaymentForm} from "./payment-form"
 
@@ -12,9 +12,14 @@ class Payment extends React.Component {
     }
 
     componentDidMount() {
-        let id = this.props.params.id
+        this.loadPayment()
+    }
 
+    loadPayment() {
+        let id = this.props.params.id
         let link = linkTo("/api/payment/" + id)
+
+        this.setState({payment: null})
         $.get(link, (response) => {
             this.setState({
                 payment: response.payment,
@@ -22,21 +27,30 @@ class Payment extends React.Component {
         })
     }
 
-    onSubmit(payment) {
+    onChange = (k, v) => {
+        let payment = this.state.payment
+        payment[k] = v
+
+        this.setState({payment: payment})
+    }
+
+    onSubmit = () => {
+        let payment = this.state.payment
+
+        payment.price = parseMoney(payment.price)
+
         let link = linkTo("/api/payment/" + payment.id)
         ajaxPut(link, payment, () => {
-            location.reload()
+            this.loadPayment()
         })
     }
 
     render() {
-        if (this.state.payment === null) {
-            return <Loading id="payment" />
-        }
-
-        return <div id="payment">
-            <PaymentForm payment={this.state.payment} onSubmit={this.onSubmit} />
-        </div>
+        return <Loading isLoading={this.state.payment === null}>
+            <div id="payment">
+                <PaymentForm payment={this.state.payment} change={this.onChange} submit={this.onSubmit} />
+            </div>
+        </Loading>
     }
 
 }

@@ -22,10 +22,10 @@ class Loading extends React.Component {
     }
 
     render() {
-        let dots = (this.state.tick % 3) + 1
+        let dots = _.repeat(".", (this.state.tick % 3) + 1)
 
-        return <div id={this.props.id} className={this.props.className}>
-            {_.repeat(".", dots)}
+        return <div>
+            {this.props.isLoading ? dots : this.props.children}
         </div>
     }
 

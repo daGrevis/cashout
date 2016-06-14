@@ -1,63 +1,56 @@
 import React from "react"
 
-import {parseMoney} from "./utils"
-
 class PaymentForm extends React.Component {
 
-    state = {
-        id: "",
-        created: "",
-        name: "",
-        price: "",
-    }
-
-    constructor(props) {
-        super(props)
-
-        if (props.payment) {
-            this.state = this.props.payment
-        }
-    }
-
-    onClick = (ev) => {
+    onSubmit = (ev) => {
         ev.preventDefault()
 
-        let payment = this.state
-        payment.price = parseMoney(payment.price)
-
-        this.props.onSubmit(payment)
+        this.props.submit()
     }
 
-    onChange(ev, fieldName) {
-        let stateUpdate = {}
-        stateUpdate[fieldName] = ev.target.value
+    onChange(ev, k) {
+        ev.preventDefault()
 
-        this.setState(stateUpdate)
+        this.props.change(k, ev.target.value)
     }
 
     render() {
+        let payment = this.props.payment
+
         return <div className="payment-form">
             <form>
                 <label htmlFor="price">Price</label>
                 <input
                     id="price"
                     placeholder="EUR"
-                    value={this.state.price}
+                    value={payment.price}
                     onChange={(ev) => this.onChange(ev, "price")}
                 />
 
                 <label htmlFor="name">Name</label>
                 <input
                     id="name"
-                    value={this.state.name}
+                    value={payment.name}
                     onChange={(ev) => this.onChange(ev, "name")}
                 />
 
-                <button onClick={this.onClick}>Save</button>
+                <button onClick={this.onSubmit}>Save</button>
             </form>
         </div>
     }
 
 }
 
-export {PaymentForm}
+function getEmptyPayment() {
+    return {
+        id: "",
+        created: "",
+        name: "",
+        price: "",
+    }
+}
+
+export {
+    PaymentForm,
+    getEmptyPayment,
+}
