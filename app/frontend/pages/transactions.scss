@@ -1,18 +1,4 @@
-#index {
-    .metrics {
-        margin-bottom: 50px;
-
-        > p > span:nth-child(2) {
-            padding-left: 10px;
-            font-weight: bold;
-            font-size: 15px;
-        }
-    }
-
-    .payment-form {
-        margin-bottom: 50px;
-    }
-
+#transactions {
     .payments-today {
         h2 {
             font-weight: normal;
@@ -48,3 +34,4 @@
         }
     }
 }
+

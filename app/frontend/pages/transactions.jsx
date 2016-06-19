@@ -3,31 +3,11 @@ import $ from "npm-zepto"
 import moment from "moment"
 import React from "react"
 
-import {linkTo, parseMoney} from "./utils"
-import {Loading} from "./loading.jsx"
-import {Money} from "./money.jsx"
-import {PaymentForm, getEmptyPayment} from "./payment-form"
+import {linkTo} from "utils"
+import {Loading} from "loading.jsx"
+import {Money} from "money.jsx"
 
-class Metrics extends React.Component {
-
-    render() {
-        let m = this.props.metrics
-
-        return <Loading isLoading={m === null}>
-            <div className="metrics">
-                <p>
-                    <span>Balance:</span>
-                    <span><Money>{m && m.balance}</Money></span>
-                </p>
-                <p>
-                    <span>Days left:</span>
-                    <span>{m && m.days_left}</span>
-                </p>
-            </div>
-        </Loading>
-    }
-
-}
+import "pages/transactions.scss"
 
 class Payment extends React.Component {
 
@@ -115,17 +95,14 @@ class PaymentsMonth extends React.Component {
 
 }
 
-class Index extends React.Component {
+class Transactions extends React.Component {
 
     state = {
-        payment: getEmptyPayment(),
         payments: null,
-        metrics: null,
     }
 
     componentDidMount() {
         this.loadPayments()
-        this.loadMetrics()
     }
 
     loadPayments() {
@@ -137,49 +114,12 @@ class Index extends React.Component {
         })
     }
 
-    loadMetrics() {
-        $.get(linkTo("/api/metrics"), (response) => {
-            this.setState({
-                metrics: response,
-            })
-        })
-    }
-
-    onPaymentFormChange = (k, v) => {
-        let payment = this.state.payment
-        payment[k] = v
-
-        this.setState({payment: payment})
-    }
-
-    onPaymentFormSubmit = () => {
-        let payment = this.state.payment
-
-        payment.price = parseMoney(payment.price)
-
-        let link = linkTo("/api/payments")
-        $.post(link, payment, () => {
-            let payment = getEmptyPayment()
-
-            this.setState({payment})
-            this.loadPayments()
-        })
-    }
-
     render() {
-        return <div id="index">
-            <Metrics metrics={this.state.metrics} />
-
-            <PaymentForm
-                payment={this.state.payment}
-                change={this.onPaymentFormChange}
-                submit={this.onPaymentFormSubmit}
-            />
-
+        return <div id="transactions">
             <PaymentsMonth payments={this.state.payments} />
         </div>
     }
 
 }
 
-export {Index}
+export {Transactions}

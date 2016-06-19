@@ -7,18 +7,30 @@ class Loading extends React.Component {
         tick: 0,
     }
 
+    componentDidMount() {
+        if (this.props.isLoading) {
+            this.interval = setInterval(this.onTick, 200)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.isLoading) {
+            this.stopTick()
+        }
+    }
+
+    componentWillUnmount() {
+        this.stopTick()
+    }
+
+    stopTick() {
+        clearInterval(this.interval)
+    }
+
     onTick = () => {
         this.setState({
             tick: this.state.tick + 1,
         })
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(this.onTick, 200)
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval)
     }
 
     render() {

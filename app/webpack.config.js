@@ -1,9 +1,11 @@
+var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
     entry: "./frontend/app.jsx",
     // Empty string needed for importing .jsx without the extension.
     resolve: {
+        root: path.resolve("./frontend"),
         extensions: ["", ".js", ".jsx"],
     },
     output: {
@@ -30,5 +32,4 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin("bundle.css"),
     ],
-    devtool: "source-map",
 }

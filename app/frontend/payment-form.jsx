@@ -1,5 +1,21 @@
 import React from "react"
 
+class DeleteLink extends React.Component {
+
+    onClick = (ev) => {
+        ev.preventDefault()
+
+        console.log("onClick")
+    }
+
+    render() {
+        return <a href="#" onClick={this.onClick}>
+            Delete
+        </a>
+    }
+
+}
+
 class PaymentForm extends React.Component {
 
     onSubmit = (ev) => {
