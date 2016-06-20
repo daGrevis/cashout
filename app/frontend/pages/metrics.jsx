@@ -30,14 +30,23 @@ class Metrics extends React.Component {
 
         return <div id="metrics">
             <Loading isLoading={m === null}>
-                <p>
-                    <span>Balance:</span>
-                    <span><Money>{m && m.balance}</Money></span>
-                </p>
-                <p>
-                    <span>Days left:</span>
-                    <span>{m && m.days_left}</span>
-                </p>
+                <div className="row">
+                    <div className="column">
+                        Balance:
+                    </div>
+                    <div className="column">
+                        <Money>{m && m.balance}</Money>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="column">
+                        Days left:
+                    </div>
+                    <div className="column">
+                        {m && m.days_left}
+                    </div>
+                </div>
             </Loading>
         </div>
     }
