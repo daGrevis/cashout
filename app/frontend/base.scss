@@ -1,5 +1,8 @@
 @import "~normalize.css/normalize";
 
+@import "forms.scss";
+@import "menu.scss";
+
 body {
     font-family: "Heebo", "Helvetica Neue", "Lucida Grande", sans-serif;
     width: 100%;
@@ -7,94 +10,23 @@ body {
     overflow-y: scroll;
 }
 
-label, input, button {
-    display: block;
-}
-
-label {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: -5px;
-}
-
-input {
-    box-shadow: none;
-    outline: none;
-    border: 0;
-    border-bottom: 2px solid #DDD;
-    font-size: 18px;
-    width: 200px;
-    margin: 20px 0;
-    padding-bottom: 5px;
-}
-
-// Screw browsers...
-// https://css-tricks.com/almanac/selectors/p/placeholder/
-// http://stackoverflow.com/a/15586457
-$placeholder-color: #888;
-::-webkit-input-placeholder {
-    color: $placeholder-color;
-    opacity: 1 !important;
-}
-:-moz-placeholder {
-    color: $placeholder-color;
-    opacity: 1 !important;
-}
-::-moz-placeholder {
-    color: $placeholder-color;
-    opacity: 1 !important;
-}
-:-ms-input-placeholder {
-    color: $placeholder-color;
-    opacity: 1 !important;
-}
-
-button {
-    border: 0;
-    background: #26A65B;
-    color: white;
-    padding: 10px 20px;
-    margin-top: 20px;
-    min-width: 200px;
+#panel {
+    box-sizing: border-box;
+    height: 100vh;
+    background: white;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 #header {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 
     h1 {
         cursor: pointer;
         margin-top: 0;
         display: inline-block;
     }
-}
-
-.money {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-$slideout-x: 200px;
-
-.slideout-menu {
-    position: fixed;
-    left: auto;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 0;
-    width: $slideout-x;
-    -webkit-overflow-scrolling: touch;
-    display: none;
-}
-
-.slideout-panel {
-    position: relative;
-    z-index: 1;
-    will-change: transform;
-}
-
-.slideout-open .slideout-menu {
-    display: block;
 }
 
 #hamburger {
@@ -108,34 +40,7 @@ $slideout-x: 200px;
     margin: -20px;
 }
 
-#menu {
-    background: #34495E;
-    box-shadow: inset 5px 0 5px rgba(0, 0, 0, .2);
-
-    ul {
-        padding: 0;
-        margin: 10px 0;
-        list-style: none;
-
-        a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            padding: 10px 20px;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
-        }
-    }
-}
-
-#panel {
-    box-sizing: border-box;
-    height: 100vh;
-    background: white;
-    padding-top: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+.money {
+    font-size: 14px;
+    font-weight: bold;
 }

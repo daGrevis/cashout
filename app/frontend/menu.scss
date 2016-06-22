@@ -1,0 +1,46 @@
+$slideout-x: 200px;
+
+.slideout-menu {
+    position: fixed;
+    left: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 0;
+    width: $slideout-x;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+}
+
+.slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
+}
+
+#menu {
+    background: #34495E;
+    box-shadow: inset 5px 0 5px rgba(0, 0, 0, .2);
+
+    ul {
+        padding: 0;
+        margin: 10px 0;
+        list-style: none;
+
+        a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            padding: 10px 20px;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
